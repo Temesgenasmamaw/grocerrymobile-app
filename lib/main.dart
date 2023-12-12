@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:groccery_app/screens/Categories.dart';
+import 'package:groccery_app/screens/Contact.dart';
+import 'package:groccery_app/screens/Favorites.dart';
+import 'package:groccery_app/screens/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,17 +35,48 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+   int _currentIndex = 0;
+
+  final List<Widget> _tabs =const [
+    HomePage(),
+    CategoriesPage(),
+    ContactPage(),
+    FavoritePage(),
+    ContactPage(),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
-        ),
+      body: _tabs[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items:const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.category),
+            label: 'Categories',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favorites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.contacts),
+            label: 'Contact',
+          ),
+        ],
       ),
     );
   }
