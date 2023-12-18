@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groccery_app/screens/Cart.dart';
 import 'package:groccery_app/screens/Categories.dart';
 import 'package:groccery_app/screens/Contact.dart';
 import 'package:groccery_app/screens/Favorites.dart';
@@ -16,10 +17,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
-  final List<Widget> _tabs = const [
+  final List<Widget> _tabs =  [
      LandingPage(),
-    CategoriesPage(),
-    ContactPage(),
+    CategoryScreen(),
+    CartPage(),
     FavoritePage(),
     ContactPage(),
   ];
@@ -30,12 +31,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
-          title: Column(
-            children: [
-              Text('Good Morning',style: TextStyle(fontWeight: FontWeight.normal, fontSize: 10)),
-              Text('Rafatul Islam',style: TextStyle(fontWeight: FontWeight.bold),),
-            ],
-          ),
+         
           actions: [
             IconButton(
               icon: const Icon(Icons.notifications),
@@ -63,7 +59,7 @@ class _HomePageState extends State<HomePage> {
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
+            icon: Icon(Icons.shopping_cart_outlined),
             label: '',
           ),
           BottomNavigationBarItem(

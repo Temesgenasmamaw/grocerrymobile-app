@@ -1,68 +1,102 @@
 import 'package:flutter/material.dart';
 import 'package:groccery_app/model/food.dart';
 import 'package:groccery_app/pages/detail.dart';
+import 'package:groccery_app/screens/Cart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LandingPage extends StatefulWidget {
-  const LandingPage({super.key});
+  const LandingPage({Key? key}) : super(key: key);
 
   @override
   State<LandingPage> createState() => _LandingPageState();
 }
 
 class _LandingPageState extends State<LandingPage> {
+  late SharedPreferences _prefs;
   int indexCategory = 0;
+  List<String> _favoriteItems = []; // Add this line
+
+  @override
+  void initState() {
+    super.initState();
+    _initSharedPreferences();
+  }
+
+  Future<void> _initSharedPreferences() async {
+    _prefs = await SharedPreferences.getInstance();
+    _loadFavorite(); // Add this line
+  }
+
+  void _loadFavorite() {
+    final List<String>? favoriteItems = _prefs.getStringList('favorites');
+    if (favoriteItems != null) {
+      setState(() {
+        _favoriteItems = favoriteItems;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-        body: Expanded(
-      child: ListView(children: [
-        Text('Categoris',style:TextStyle(fontWeight: FontWeight.bold)),
-        SizedBox(
-          height: 20,
+      appBar: AppBar(
+        title: Column(
+          children: [
+            Text('Good Morning',
+                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 10)),
+            Text(
+              'Rafatul Islam',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
-        categories(),
-        SizedBox(
-          height: 20,
-        ),
-          Text('Latest Products',style:TextStyle(fontWeight: FontWeight.bold)),
-        SizedBox(
-          height: 20,
-        ),
-        gridFood()
-      ]),
-    ));
+      ),
+      body: Column(
+        children: [
+          Text('Categories', style: TextStyle(fontWeight: FontWeight.bold)),
+          SizedBox(
+            height: 20,
+          ),
+          categories(),
+          SizedBox(
+            height: 20,
+          ),
+          Text('Latest Products',
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          SizedBox(
+            height: 20,
+          ),
+          Expanded(
+            child: gridFood(),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget categories() {
-    List list = ['Food', 'Fruits', 'Vegetables', 'Grocery', 'Drink'];
+
+   final List<String> imagePaths = [
+    'assets/1.png',
+    'assets/2.png',
+    'assets/3.png',
+    'assets/4.png',
+    'assets/5.png',
+    'assets/6.png',
+  ];
     return SizedBox(
-      height: 40,
-      child: ListView.builder(
-        itemCount: list.length,
+      height: 80,
+         child: ListView.builder(
         scrollDirection: Axis.horizontal,
+        itemCount: imagePaths.length,
         itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              indexCategory = index;
-              setState(() {});
-            },
-            child: Container(
-              padding: EdgeInsets.fromLTRB(
-                index == 0 ? 16 : 16,
-                0,
-                index == list.length - 1 ? 16 : 16,
-                0,
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                list[index],
-                style: TextStyle(
-                  fontSize: 22,
-                  color: indexCategory == index ? Colors.green : Colors.grey,
-                  fontWeight: indexCategory == index ? FontWeight.bold : null,
-                ),
-              ),
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              imagePaths[index],
+              width: 100, // Set the desired width of each image
+              height: 100, // Set the desired height of each image
+              fit: BoxFit.cover,
             ),
           );
         },
@@ -124,16 +158,16 @@ class _LandingPageState extends State<LandingPage> {
                       ),
                     ),
                     const SizedBox(height: 3),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Row(
-                        children: [
-                          const Spacer(),
-                          const Icon(Icons.star, color: Colors.amber, size: 18),
-                          const SizedBox(width: 3),
-                        ],
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                    //   child: Row(
+                    //     children: [
+                    //       const Spacer(),
+                    //       const Icon(Icons.star, color: Colors.amber, size: 18),
+                    //       const SizedBox(width: 3),
+                    //     ],
+                    //   ),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: Text(
@@ -147,21 +181,39 @@ class _LandingPageState extends State<LandingPage> {
                     ),
                   ],
                 ),
-                const Positioned(
+                Positioned(
                   top: 12,
                   left: 12,
-                  child: Icon(Icons.favorite_border, color: Colors.grey),
+                  child: IconButton(
+                    icon: Icon(
+                      _favoriteItems.contains(food.name)
+                          ? Icons.favorite
+                          : Icons.favorite_border_rounded,
+                      color: Colors.red, // Customize the color as needed
+                    ),
+                    onPressed: () {
+                      _toggleFavorite(food);
+                    },
+                  ),
                 ),
-                const Align(
-                  alignment: Alignment.bottomRight,                   
-                    child: InkWell(
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: InkWell(
+                    onTap: () {
+                      // _addToCart(food);
+                      // CartPage(_addToCart(food));
+                    },
+                    child: Material(
+                      color: Colors.transparent,
                       child: Padding(
                         padding: EdgeInsets.all(8),
-                        child: Text('Add to cart',style: TextStyle(color: Colors.red),)
-                        //Icon(Icons.add, color: Colors.white),
+                        child: Text(
+                          'Add to cart',
+                          style: TextStyle(color: Colors.red),
+                        ),
                       ),
                     ),
-                  
+                  ),
                 ),
               ],
             ),
@@ -169,5 +221,40 @@ class _LandingPageState extends State<LandingPage> {
         );
       },
     );
+  }
+
+  // void _addToCart(Food food) {
+  //   List<String> cartItems = _prefs.getStringList('cart') ?? [];
+  //   cartItems.add(food.name);
+  //   _prefs.setStringList('cart', cartItems);
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text('${food.name} added to the cart'),
+  //     ),
+  //   );
+
+  //   // Pass the updated cart items to CartPage
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => CartPage(cartItems: cartItems),
+  //     ),
+  //   );
+  // }
+
+  void _toggleFavorite(Food food) {
+    List<String> favoriteItems = _prefs.getStringList('favorites') ?? [];
+
+    if (favoriteItems.contains(food.name)) {
+      favoriteItems.remove(food.name);
+    } else {
+      favoriteItems.add(food.name);
+      favoriteItems.add(food.image);
+    }
+
+    _prefs.setStringList('favorites', favoriteItems);
+    setState(() {
+      _favoriteItems = favoriteItems;
+    });
   }
 }
