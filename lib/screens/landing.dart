@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:groccery_app/model/product_list.dart';
-import 'package:groccery_app/model/product_list.dart';
-import 'package:groccery_app/pages/detail.dart';
-import 'package:groccery_app/screens/Cart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/product.dart';

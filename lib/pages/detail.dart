@@ -121,33 +121,7 @@ class _DetailPageState extends State<DetailPage> {
                                 child: Text('Add to cart'),
                               ),
                             ),
-                            // ElevatedButton(
-                            //   style: ElevatedButton.styleFrom(
-                            //       backgroundColor: Colors.orangeAccent,
-                            //       elevation: 10.0,
-                            //       shape: const CircleBorder(),
-                            //       padding: const EdgeInsets.all(16.0)),
-                            //   child: Text('Add to cart'),
-                            //   onPressed: () async {
-                            //     final cartBloc = context.read<CartBloc>();
-                            //     final cartItems = cartBloc.state.cartItems;
-                            //     if (cartItems.any(
-                            //         (item) => item.id == widget.products.id)) {
-                            //       ScaffoldMessenger.of(context).showSnackBar(
-                            //           const SnackBar(
-                            //               content: Text(
-                            //                   'Item already addeded to cart'),
-                            //               duration: Duration(seconds: 3)));
-                            //     } else {
-                            //       cartBloc.add(AddToCartEvent(widget.products));
-                            //       ScaffoldMessenger.of(context).showSnackBar(
-                            //           const SnackBar(
-                            //               content:
-                            //                   Text('Item is added to cart'),
-                            //               duration: Duration(seconds: 3)));
-                            //     }
-                            //   },
-                            // ),
+                     
 
                             Padding(
                               padding: EdgeInsets.only(top: 20.0),

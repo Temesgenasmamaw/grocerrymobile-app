@@ -5,6 +5,8 @@ import 'package:groccery_app/bloc/auth/bloc/auth_bloc.dart';
 
 import 'package:groccery_app/pages/splash.dart';
 
+import 'bloc/add_to_favorite/add_to_favorite_bloc.dart';
+
 
 void main() async {
   runApp(const MyApp());
@@ -21,11 +23,11 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthBloc>(
           create: (BuildContext context) => AuthBloc(),
         ),
-        // BlocProvider(
-        //   create: (_) => CartBloc()..add(LoadCart()),
-        // ),
+        BlocProvider(
+          create: (_) => FavoriteBloc(),
+        ),
         BlocProvider<CartBloc>(
-          create: (BuildContext context) => CartBloc(),
+          create: (_) => CartBloc(),
         ),
       ],
       child: MaterialApp(

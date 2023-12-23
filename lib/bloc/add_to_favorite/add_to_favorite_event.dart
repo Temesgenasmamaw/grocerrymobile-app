@@ -1,5 +1,4 @@
 
-
 part of 'add_to_favorite_bloc.dart';
 
 sealed class FavoriteEvent extends Equatable {

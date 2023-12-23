@@ -4,6 +4,7 @@ import 'package:groccery_app/bloc/add_to_cart/add_to_cart_bloc.dart';
 import 'package:groccery_app/pages/detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../bloc/add_to_favorite/add_to_Favorite_bloc.dart';
 import '../model/product_list.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -206,7 +207,26 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                     Colors.red, // Customize the color as needed
                               ),
                               onPressed: () {
-                                _toggleFavorite(product);
+                                   final favoriteBloc = context.read<FavoriteBloc>();
+                                final favoriteItems = favoriteBloc.state.cartItems;
+                                if (favoriteItems
+                                    .any((item) => item.id == product.id)) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Item already addeded to cart'),
+                                      duration: Duration(seconds: 3),
+                                    ),
+                                  );
+                                } else {
+                                  favoriteBloc.add(AddToCartEvent(product));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Item is added to cart'),
+                                      duration: Duration(seconds: 3),
+                                    ),
+                                  );
+                                }
                               },
                             ),
                           ),
