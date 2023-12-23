@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:groccery_app/model/food.dart';
+import 'package:groccery_app/model/product_list.dart';
+import 'package:groccery_app/model/product_list.dart';
 import 'package:groccery_app/pages/detail.dart';
 import 'package:groccery_app/screens/Cart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../model/product.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -66,9 +69,9 @@ class _LandingPageState extends State<LandingPage> {
           SizedBox(
             height: 20,
           ),
-          Expanded(
-            child: gridFood(),
-          ),
+          // Expanded(
+          //   child: gridFood(),
+          // ),
         ],
       ),
     );
@@ -104,124 +107,117 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  Widget gridFood() {
-    return GridView.builder(
-      itemCount: dummyFoods.length,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 8,
-        crossAxisSpacing: 8,
-        mainAxisExtent: 200,
-      ),
-      itemBuilder: (context, index) {
-        Food food = dummyFoods[index];
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return DetailPage(food: food);
-            }));
-          },
-          child: Container(
-            height: 261,
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 16),
-                    Center(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(120),
-                        child: Image.asset(
-                          food.image,
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        food.name,
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    const SizedBox(height: 3),
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 16),
-                    //   child: Row(
-                    //     children: [
-                    //       const Spacer(),
-                    //       const Icon(Icons.star, color: Colors.amber, size: 18),
-                    //       const SizedBox(width: 3),
-                    //     ],
-                    //   ),
-                    // ),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Text(
-                        '\$${food.price}',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Positioned(
-                  top: 12,
-                  left: 12,
-                  child: IconButton(
-                    icon: Icon(
-                      _favoriteItems.contains(food.name)
-                          ? Icons.favorite
-                          : Icons.favorite_border_rounded,
-                      color: Colors.red, // Customize the color as needed
-                    ),
-                    onPressed: () {
-                      _toggleFavorite(food);
-                    },
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: InkWell(
-                    onTap: () {
-                      // _addToCart(food);
-                      // CartPage(_addToCart(food));
-                    },
-                    child: Material(
-                      color: Colors.transparent,
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          'Add to cart',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+  // Widget gridFood() {
+  //   return GridView.builder(
+  //     itemCount: Product.dummyProducts.length,
+  //     shrinkWrap: true,
+  //     physics: const NeverScrollableScrollPhysics(),
+  //     padding: const EdgeInsets.all(16),
+  //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+  //       crossAxisCount: 2,
+  //       mainAxisSpacing: 8,
+  //       crossAxisSpacing: 8,
+  //       mainAxisExtent: 200,
+  //     ),
+  //     itemBuilder: (context, index) {
+  //       // Food food = dummyFoods[index];
+  //       Product products=ProductList.dummyProductLists[index];
+  //       return GestureDetector(
+  //         onTap: () {
+  //           Navigator.push(context, MaterialPageRoute(builder: (context) {
+  //             return DetailPage(products: products);
+  //           }));
+  //         },
+  //         child: Container(
+  //           height: 261,
+  //           decoration: BoxDecoration(
+  //             color: Colors.grey[200],
+  //             borderRadius: BorderRadius.circular(16),
+  //           ),
+  //           child: Stack(
+  //             children: [
+  //               Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   const SizedBox(height: 16),
+  //                   Center(
+  //                     child: ClipRRect(
+  //                       borderRadius: BorderRadius.circular(120),
+  //                       child: Image.network(
+  //                         products.image,
+  //                         width: 50,
+  //                         height: 50,
+  //                         fit: BoxFit.cover,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   const SizedBox(height: 12),
+  //                   Padding(
+  //                     padding: const EdgeInsets.symmetric(horizontal: 16),
+  //                     child: Text(
+  //                       products.name,
+  //                       textAlign: TextAlign.center,
+  //                       maxLines: 1,
+  //                       overflow: TextOverflow.ellipsis,
+  //                     ),
+  //                   ),
+  //                   const SizedBox(height: 3),
+                   
+  //                   Padding(
+  //                     padding: const EdgeInsets.all(16),
+  //                     child: Text(
+  //                       '\$${products.price}',
+  //                       style: const TextStyle(
+  //                         color: Colors.black,
+  //                         fontWeight: FontWeight.bold,
+  //                         fontSize: 16,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //               Positioned(
+  //                 top: 12,
+  //                 left: 12,
+  //                 child: IconButton(
+  //                   icon: Icon(
+  //                     _favoriteItems.contains(products.name)
+  //                         ? Icons.favorite
+  //                         : Icons.favorite_border_rounded,
+  //                     color: Colors.red, // Customize the color as needed
+  //                   ),
+  //                   onPressed: () {
+  //                     _toggleFavorite(products);
+  //                   },
+  //                 ),
+  //               ),
+  //               Align(
+  //                 alignment: Alignment.bottomRight,
+  //                 child: InkWell(
+  //                   onTap: () {
+  //                     // _addToCart(food);
+  //                     // CartPage(_addToCart(food));
+  //                   },
+  //                   child: Material(
+  //                     color: Colors.transparent,
+  //                     child: Padding(
+  //                       padding: EdgeInsets.all(8),
+  //                       child: Text(
+  //                         'Add to cart',
+  //                         style: TextStyle(color: Colors.red),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+      
+  //     },
+  //   );
+  // }
 
   // void _addToCart(Food food) {
   //   List<String> cartItems = _prefs.getStringList('cart') ?? [];
@@ -242,14 +238,14 @@ class _LandingPageState extends State<LandingPage> {
   //   );
   // }
 
-  void _toggleFavorite(Food food) {
+  void _toggleFavorite(Product products) {
     List<String> favoriteItems = _prefs.getStringList('favorites') ?? [];
 
-    if (favoriteItems.contains(food.name)) {
-      favoriteItems.remove(food.name);
+    if (favoriteItems.contains(products.name)) {
+      favoriteItems.remove(products.name);
     } else {
-      favoriteItems.add(food.name);
-      favoriteItems.add(food.image);
+      favoriteItems.add(products.name);
+      // favoriteItems.add(products.image);
     }
 
     _prefs.setStringList('favorites', favoriteItems);
@@ -257,4 +253,5 @@ class _LandingPageState extends State<LandingPage> {
       _favoriteItems = favoriteItems;
     });
   }
+
 }

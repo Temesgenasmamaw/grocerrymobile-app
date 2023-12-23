@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:groccery_app/screens/Cart.dart';
-import 'package:groccery_app/screens/Categories.dart';
-import 'package:groccery_app/screens/Contact.dart';
-import 'package:groccery_app/screens/Favorites.dart';
-import 'package:groccery_app/screens/landing.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:groccery_app/bloc/add_to_cart/add_to_cart_bloc.dart';
+import 'package:groccery_app/screens/cart_list.dart';
+
+import 'categories_list.dart';
+import 'favorite_list.dart';
+import 'product_list_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -17,30 +19,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
-  final List<Widget> _tabs =  [
-     LandingPage(),
-    CategoryScreen(),
-    CartPage(),
-    FavoritePage(),
-    ContactPage(),
+  final List<Widget> _tabs = [
+    ProductListScreen(),
+    CategoryListScreen(),
+    CartListScreen(),
+    // CartScreen(),
+    FavoriteListScreen(),
+    // ContactPage(),
+    ProductListScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-          automaticallyImplyLeading: false,
-         
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.notifications),
-              tooltip: 'notification',
-              onPressed: () {
-                // handle the press
-              },
-            ),
-          ]),
+      appBar: AppBar(),
       body: _tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -49,7 +41,7 @@ class _HomePageState extends State<HomePage> {
             _currentIndex = index;
           });
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: '',
@@ -59,9 +51,42 @@ class _HomePageState extends State<HomePage> {
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart_outlined),
-            label: '',
-          ),
+              icon: BlocBuilder<CartBloc, CartState>(
+                builder: (BuildContext context, CartState state) {
+                  int count = state.cartItems.length;
+                  return Stack(
+                    children: [
+                      Icon(Icons.shopping_cart_outlined),
+                      Positioned(
+                          top: 0,
+                          right: 0,
+                          //  bottom: 16,
+                          child: Stack(children: [
+                            Container(
+                              padding: EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: Colors.orangeAccent,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              constraints: BoxConstraints(
+                                minHeight: 10,
+                                minWidth: 9,
+                              ),
+                              child: Text(
+                                '${count}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ]))
+                    ],
+                  );
+                },
+              ),
+              label: ''),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: '',
@@ -73,7 +98,7 @@ class _HomePageState extends State<HomePage> {
         ],
         elevation: 10,
         unselectedItemColor: Colors.grey[500],
-        selectedItemColor: Colors.blue[800],
+        selectedItemColor: Colors.orangeAccent,
         iconSize: 30,
       ),
     );

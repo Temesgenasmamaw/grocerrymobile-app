@@ -1,0 +1,224 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:groccery_app/bloc/add_to_favorite/add_to_favorite_bloc.dart';
+
+import 'thankyou.dart';
+
+class FavoriteListScreen extends StatefulWidget {
+  const FavoriteListScreen({Key? key}) : super(key: key);
+
+  @override
+  State<FavoriteListScreen> createState() => _FavoriteListScreenState();
+}
+
+class _FavoriteListScreenState extends State<FavoriteListScreen> {
+  double totalPrice = 0;
+  int quantity = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    //  const style=TextStyle(fontWeight: FontWeight.bold,fontSize:16);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Item details',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            BlocBuilder<FavoriteBloc, FavoriteState>(builder: (context, state) {
+              if (state.favoriteItems.isEmpty) {
+                return Center(
+                  heightFactor: 13.8,
+                  child: Text(
+                    'Your cart is empty',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                );
+              } else {
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: state.favoriteItems.length,
+                    itemBuilder: (context, index) {
+                      totalPrice = totalPrice + state.favoriteItems[index].price *quantity;
+                      return Column(
+                        children: [
+                          Row(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(18),
+                                child: Image.asset(
+                                  state.favoriteItems[index].image,
+                                  width: 93,
+                                  height: 113,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Text(state.favoriteItems[index].category
+                                        .toUpperCase()),
+                                    Text(
+                                      state.favoriteItems[index].name,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    ),
+                                    SizedBox(
+                                      height: 16,
+                                    ),
+                                    Text(
+                                      '\$${state.favoriteItems[index].price}',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.orangeAccent,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                width: 6,
+                              ),
+                              Container(
+                                alignment: Alignment.bottomRight,
+                                margin: EdgeInsets.only(top: 40),
+                                child: Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                            setState(() {
+                                            quantity = quantity -1;
+                                          });
+                                        },
+                                        icon: Icon(Icons.remove),
+                                      ),
+                                      Text('${quantity}',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20)),
+                                      IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            quantity = quantity + 1;
+                                          });
+                                        },
+                                        icon: Icon(Icons.add),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          final _cartBloc =
+                                              BlocProvider.of<FavoriteBloc>(
+                                                  context);
+                                          _cartBloc.add(RemoveFromFavoriteEvent(
+                                              state.favoriteItems[index]));
+                                        },
+                                        icon: Icon(Icons.delete),
+                                      ),
+                                    ],
+                                  ),
+                               
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 26),
+                        ],
+                      );
+                    },
+                  ),
+                );
+              }
+            }),
+            MySeparator(
+              color: Colors.black,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(' Total',
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                Text(
+                  ' \$${totalPrice}',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                 Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return ThankYouScreen();
+                      }));
+              },
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size.fromHeight(50),
+                backgroundColor: Colors.orangeAccent,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+              ),
+              child: Text(
+                'PLACE ORDER',
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MySeparator extends StatelessWidget {
+  const MySeparator({Key? key, this.height = 1, this.color = Colors.black})
+      : super(key: key);
+  final double height;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final boxWidth = constraints.constrainWidth();
+        const dashWidth = 10.0;
+        final dashHeight = height;
+        final dashCount = (boxWidth / (2 * dashWidth)).floor();
+        return Flex(
+          children: List.generate(dashCount, (_) {
+            return SizedBox(
+              width: dashWidth,
+              height: dashHeight,
+              child: DecoratedBox(
+                decoration: BoxDecoration(color: color),
+              ),
+            );
+          }),
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          direction: Axis.horizontal,
+        );
+      },
+    );
+  }
+}

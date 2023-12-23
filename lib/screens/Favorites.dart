@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../model/category_model.dart';
-
 class FavoritePage extends StatefulWidget {
   @override
   _FavoritePageState createState() => _FavoritePageState();
@@ -43,8 +41,7 @@ class _FavoritePageState extends State<FavoritePage> {
         itemBuilder: (context, index) {
           return ListTile(
             leading: Image.asset(
-              
-              _favoriteItems[dummyCategorys[index]],
+              _favoriteItems[index],
             ),
             title: Text(_favoriteItems[index]),
           );

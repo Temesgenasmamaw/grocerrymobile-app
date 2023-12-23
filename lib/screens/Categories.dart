@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:groccery_app/model/category_model.dart';
+
+import '../model/category.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -19,9 +20,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
           crossAxisSpacing: 8.0,
           mainAxisSpacing: 8.0,
         ),
-        itemCount: dummyCategorys.length,
+       itemCount: Category.categories.length,
         itemBuilder: (BuildContext context, int index) {
-          return _buildCategoryCard( dummyCategorys[index]);
+          return _buildCategoryCard(Category.categories[index]);
         },
       ));
   }
@@ -32,7 +33,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-           Expanded(child: Image.asset(category.image)),
+           Expanded(child: Image.network(category.imageUrl)),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
