@@ -1,7 +1,6 @@
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:groccery_app/auth/login.dart';
-import 'package:groccery_app/screens/home.dart';
 
 class SplashPage extends StatefulWidget {
  const SplashPage({Key? key}) : super(key: key);
@@ -20,7 +19,7 @@ class _SplashPageState extends State<SplashPage> {
       title:const Text(
         "Fresh Fruits",
         style: TextStyle(
-          fontSize: 18,
+          fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
       ),
