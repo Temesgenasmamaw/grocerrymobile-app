@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:groccery_app/screens/home.dart';
- // Import your home page file
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -41,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
             width: size.width,
             child: Container(
               decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 204, 198, 198),
+                color: Color.fromARGB(255, 250, 246, 246),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(36.0),
                   topRight: Radius.circular(36.0),
@@ -51,10 +50,16 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 50),
-                  Text(
-                    "Sign In",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Sign In",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                   SizedBox(height: 50),
                   Padding(
@@ -68,7 +73,8 @@ class _LoginPageState extends State<LoginPage> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25.0),
                             ),
-                            errorText: _errorText.isNotEmpty && _usernameController.text.isEmpty
+                            errorText: _errorText.isNotEmpty &&
+                                    _usernameController.text.isEmpty
                                 ? 'Username is required'
                                 : null,
                           ),
@@ -78,13 +84,15 @@ class _LoginPageState extends State<LoginPage> {
                           controller: _passwordController,
                           obscureText: !_isPasswordVisible,
                           decoration: InputDecoration(
-                            hintText: 'Password',
+                            hintText: '1234',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25.0),
                             ),
                             suffixIcon: IconButton(
                               icon: Icon(
-                                _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                                _isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
                               ),
                               onPressed: () {
                                 setState(() {
@@ -92,7 +100,8 @@ class _LoginPageState extends State<LoginPage> {
                                 });
                               },
                             ),
-                            errorText: _errorText.isNotEmpty && _passwordController.text.isEmpty
+                            errorText: _errorText.isNotEmpty &&
+                                    _passwordController.text.isEmpty
                                 ? 'Password is required'
                                 : null,
                           ),
@@ -100,14 +109,21 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(height: 20),
                         ElevatedButton(
                           onPressed: () {
-                            // Implement sign-in logic here
                             _signIn();
                           },
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Color.fromARGB(255, 243, 176, 75)),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size.fromHeight(50),
+                            backgroundColor: Colors.orangeAccent,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
                           ),
-                          child: Text('Sign In'),
+                          child: Text(
+                            'SIGN IN',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ],
                     ),
@@ -122,17 +138,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _signIn() {
-    // Add your validation logic here
-    if (_usernameController.text == '1234' && _passwordController.text == '1234') {
-      // Valid credentials, navigate to the next page
+    if (_usernameController.text == '1234' &&
+        _passwordController.text == '1234') {
       Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomePage(title: '',), // Replace with your home page widget
-        ),
-      );
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(
+              title: '',
+            ),
+          ));
     } else {
-      // Invalid credentials, show error message
       setState(() {
         _errorText = 'Invalid username or password';
       });

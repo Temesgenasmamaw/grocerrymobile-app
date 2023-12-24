@@ -26,8 +26,7 @@ class _SplashPageState extends State<SplashPage> {
       ),
       backgroundColor: Colors.orange,
       showLoader: false,
-     // loadingText:const Text("Fresh Fruits"),
-      navigator: HomePage(title: '',),
+      navigator: LoginPage(),
       durationInSeconds: 3,
     );
   }
