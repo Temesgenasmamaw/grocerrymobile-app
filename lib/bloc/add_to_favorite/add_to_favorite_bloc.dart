@@ -1,13 +1,12 @@
 
 import 'dart:async';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:equatable/equatable.dart';
 import '../../model/product_list.dart';
 
-part 'add_to_favorite_event.dart';
 part 'add_to_favorite_state.dart';
+part 'add_to_favorite_event.dart';
 
 class FavoriteBloc extends Bloc<FavoriteEvent, FavoriteState> {
   FavoriteBloc() : super(FavoriteState([])) {

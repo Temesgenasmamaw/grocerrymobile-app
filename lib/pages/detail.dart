@@ -89,7 +89,8 @@ class _DetailPageState extends State<DetailPage> {
                           children: [
                             ButtonTheme(
                               height: 50.0, // Set the height as needed
-                              child: ElevatedButton(
+                              child: 
+                              ElevatedButton(
                                 onPressed: () {
                                   final cartBloc = context.read<CartBloc>();
                                   final cartItems = cartBloc.state.cartItems;
@@ -120,6 +121,7 @@ class _DetailPageState extends State<DetailPage> {
                                 ),
                                 child: Text('Add to cart'),
                               ),
+                           
                             ),
                      
 

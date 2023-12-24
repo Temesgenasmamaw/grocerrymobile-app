@@ -153,7 +153,7 @@ class _CartListScreenState extends State<CartListScreen> {
                     style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 Text(
-                  ' \$${totalPrice}',
+                  ' \$100',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

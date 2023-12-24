@@ -1,32 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:groccery_app/model/product.dart';
 
-class ContactPage extends StatefulWidget {
-  const ContactPage({super.key});
-
-  @override
-  State<ContactPage> createState() => _ContactPageState();
-}
-
-class _ContactPageState extends State<ContactPage> {
+class ContactPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body:GridView.builder(
-       itemCount:Product. dummyProducts.length,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 8,
-        crossAxisSpacing: 8,
-        mainAxisExtent: 200,
+      appBar: AppBar(
+        title: Text('Contact Page'),
       ),
-      itemBuilder: (context,index){
-        
-      })
-        
-        );
+      body: ListView(
+        children: [
+          ListTile(
+            leading: Icon(Icons.email),
+            title: Text('Email'),
+            subtitle: Text('example@example.com'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(Icons.phone),
+            title: Text('Phone'),
+            subtitle: Text('+1 123-456-7890'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(Icons.location_on),
+            title: Text('Address'),
+            subtitle: Text('123 Main St, City, Country'),
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
   }
 }

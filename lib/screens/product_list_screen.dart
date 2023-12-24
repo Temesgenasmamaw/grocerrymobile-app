@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:groccery_app/bloc/add_to_cart/add_to_cart_bloc.dart';
 import 'package:groccery_app/pages/detail.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../bloc/add_to_favorite/add_to_Favorite_bloc.dart';
+import '../bloc/add_to_favorite/add_to_favorite_bloc.dart';
 import '../model/product_list.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -15,28 +13,9 @@ class ProductListScreen extends StatefulWidget {
 }
 
 class _ProductListScreenState extends State<ProductListScreen> {
-  late SharedPreferences _prefs;
-  int indexCategory = 0;
-  List<String> _favoriteItems = []; // Add this line
-
   @override
   void initState() {
     super.initState();
-    _initSharedPreferences();
-  }
-
-  Future<void> _initSharedPreferences() async {
-    _prefs = await SharedPreferences.getInstance();
-    _loadFavorite(); // Add this line
-  }
-
-  void _loadFavorite() {
-    final List<String>? favoriteItems = _prefs.getStringList('favorites');
-    if (favoriteItems != null) {
-      setState(() {
-        _favoriteItems = favoriteItems;
-      });
-    }
   }
 
   @override
@@ -164,8 +143,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                               ),
                               const SizedBox(height: 6),
 
-                              // padding:
-                              //     const EdgeInsets.symmetric(horizontal: 10),
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
@@ -198,35 +175,46 @@ class _ProductListScreenState extends State<ProductListScreen> {
                           Positioned(
                             top: 6,
                             left: 6,
-                            child: IconButton(
-                              icon: Icon(
-                                _favoriteItems.contains(product.name)
-                                    ? Icons.favorite
-                                    : Icons.favorite_border_rounded,
-                                color:
-                                    Colors.red, // Customize the color as needed
-                              ),
-                              onPressed: () {
-                                   final favoriteBloc = context.read<FavoriteBloc>();
-                                final favoriteItems = favoriteBloc.state.cartItems;
-                                if (favoriteItems
-                                    .any((item) => item.id == product.id)) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content:
-                                          Text('Item already addeded to cart'),
-                                      duration: Duration(seconds: 3),
-                                    ),
-                                  );
-                                } else {
-                                  favoriteBloc.add(AddToCartEvent(product));
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Item is added to cart'),
-                                      duration: Duration(seconds: 3),
-                                    ),
-                                  );
-                                }
+                            child: BlocBuilder<FavoriteBloc, FavoriteState>(
+                              builder: (context, state) {
+                                final isFavorite = state.favoriteItems
+                                    .any((item) => item.id == product.id);
+                                return IconButton(
+                                  icon: Icon(
+                                    isFavorite
+                                        ? Icons.favorite
+                                        : Icons.favorite_border_rounded,
+                                    color:
+                                        isFavorite ? Colors.red : Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    final favoriteBloc =
+                                        context.read<FavoriteBloc>();
+                                    if (isFavorite) {
+                                      favoriteBloc.add(
+                                          RemoveFromFavoriteEvent(product));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Item removed from favorite'),
+                                          duration: Duration(seconds: 3),
+                                        ),
+                                      );
+                                    } else {
+                                      favoriteBloc
+                                          .add(AddToFavoriteEvent(product));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content:
+                                              Text('Item added to favorite'),
+                                          duration: Duration(seconds: 3),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                );
                               },
                             ),
                           ),
@@ -274,27 +262,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 },
               ),
             ),
-         
           ],
         ),
       ),
     );
-  }
-
-  void _toggleFavorite(ProductList products) {
-    List<String> favoriteItems = _prefs.getStringList('favorites') ?? [];
-
-    if (favoriteItems.contains(products.name)) {
-      favoriteItems.remove(products.name);
-    } else {
-      favoriteItems.add(products.image.toString());
-      // favoriteItems.add(products.image);
-    }
-
-    _prefs.setStringList('favorites', favoriteItems);
-    setState(() {
-      _favoriteItems = favoriteItems;
-    });
   }
 
   Widget categories() {
