@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:groccery_app/bloc/add_to_cart/add_to_cart_bloc.dart';
 import 'package:groccery_app/screens/cart_list.dart';
 
+import 'Contact.dart';
 import 'categories_list.dart';
 import 'favorite_list.dart';
 import 'product_list_screen.dart';
@@ -23,16 +24,16 @@ class _HomePageState extends State<HomePage> {
     ProductListScreen(),
     CategoryListScreen(),
     CartListScreen(),
-    // CartScreen(),
     FavoriteListScreen(),
-    // ContactPage(),
-    ProductListScreen(),
+    ContactPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
       body: _tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,

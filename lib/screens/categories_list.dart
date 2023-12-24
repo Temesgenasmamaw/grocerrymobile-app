@@ -14,14 +14,12 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Categories'),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            // Navigator.pop(context);
-          },
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Categories',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -30,8 +28,8 @@ class _CategoryListScreenState extends State<CategoryListScreen> {
             itemCount: dummyProductLists.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              mainAxisSpacing: 8, // Adjust the spacing as needed
-              crossAxisSpacing: 8, // Adjust the spacing as needed
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
               mainAxisExtent: 160,
             ),
             itemBuilder: (context, index) {

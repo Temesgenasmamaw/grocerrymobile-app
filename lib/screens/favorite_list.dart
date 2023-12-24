@@ -18,6 +18,7 @@ class _FavoriteListScreenState extends State<FavoriteListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           'Favorite\'s',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),

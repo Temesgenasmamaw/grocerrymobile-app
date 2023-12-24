@@ -20,6 +20,7 @@ class _CartListScreenState extends State<CartListScreen> {
     //  const style=TextStyle(fontWeight: FontWeight.bold,fontSize:16);
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           'Item details',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),

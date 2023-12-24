@@ -6,6 +6,7 @@ class ContactPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Contact Page'),
+        automaticallyImplyLeading: false,
       ),
       body: ListView(
         children: [

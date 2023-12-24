@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                         TextField(
                           controller: _usernameController,
                           decoration: InputDecoration(
-                            hintText: 'raftaul1234@gmail.com',
+                            hintText: ' Username: 929040099',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25.0),
                             ),
@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                           controller: _passwordController,
                           obscureText: !_isPasswordVisible,
                           decoration: InputDecoration(
-                            hintText: '1234',
+                            hintText: '123456',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25.0),
                             ),
@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                             'SIGN IN',
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -138,8 +138,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _signIn() {
-    if (_usernameController.text == '1234' &&
-        _passwordController.text == '1234') {
+    if (_usernameController.text == '929040099' &&
+        _passwordController.text == '123456') {
       Navigator.push(
           context,
           MaterialPageRoute(
