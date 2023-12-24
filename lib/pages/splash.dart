@@ -28,7 +28,7 @@ class _SplashPageState extends State<SplashPage> {
       showLoader: false,
      // loadingText:const Text("Fresh Fruits"),
       navigator: HomePage(title: '',),
-      durationInSeconds: 5,
+      durationInSeconds: 3,
     );
   }
 }
