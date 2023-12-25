@@ -37,6 +37,7 @@ dependencies:
   path_provider:
   carousel_slider: ^4.2.1
   equatable: ^2.0.5
+  dart_code_linter: ^1.1.1
 
 
   # The following adds the Cupertino Icons font to your application.
